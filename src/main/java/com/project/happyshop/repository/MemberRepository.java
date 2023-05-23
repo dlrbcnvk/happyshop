@@ -1,6 +1,8 @@
 package com.project.happyshop.repository;
 
+import com.project.happyshop.domain.Address;
 import com.project.happyshop.domain.Member;
+import com.project.happyshop.domain.SocialProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -22,5 +24,14 @@ public class MemberRepository {
 
     public Member findOne(Long id) {
         return em.find(Member.class, id);
+    }
+
+    public List<Member> findByEmailAndProvider(String email, SocialProvider provider) {
+        return em.createQuery("select m from Member m " +
+                "where m.email =: email " +
+                "and m.provider =: provider")
+                .setParameter("email", email)
+                .setParameter("provider", provider)
+                .getResultList();
     }
 }
