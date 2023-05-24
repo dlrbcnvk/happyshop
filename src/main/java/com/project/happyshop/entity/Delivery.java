@@ -1,4 +1,4 @@
-package com.project.happyshop.domain;
+package com.project.happyshop.entity;
 
 import lombok.Getter;
 

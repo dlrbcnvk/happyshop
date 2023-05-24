@@ -1,14 +1,13 @@
 package com.project.happyshop.service;
 
-import com.project.happyshop.domain.Address;
-import com.project.happyshop.domain.Member;
+import com.project.happyshop.entity.Address;
+import com.project.happyshop.entity.Member;
 import com.project.happyshop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service

@@ -1,10 +1,24 @@
 <!DOCTYPE HTML>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
 </head>
 <body>
     <p>happyshop 쇼핑몰 입니다.</p>
-    <a href="register">회원가입</a>
+
+    <div sec:authorize="isAnonymous()" class="anonymous">
+        <h2>isAnonymous()</h2>
+        <a th:href="@{register}">회원가입</a><br><br>
+        <a th:href="@{login}">로그인</a>
+    </div>
+
+    <div sec:authorize="isAuthenticated()" class="authenticated">
+        <h2>isAuthenticated()</h2>
+        <p>인증된 사용자</p>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="로그아웃">
+        </form>
+    </div>
 </body>
 </html>

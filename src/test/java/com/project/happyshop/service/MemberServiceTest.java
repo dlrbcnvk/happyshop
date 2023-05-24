@@ -1,8 +1,8 @@
 package com.project.happyshop.service;
 
-import com.project.happyshop.domain.Address;
-import com.project.happyshop.domain.Member;
-import com.project.happyshop.domain.SocialProvider;
+import com.project.happyshop.entity.Address;
+import com.project.happyshop.entity.Member;
+import com.project.happyshop.entity.SocialProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

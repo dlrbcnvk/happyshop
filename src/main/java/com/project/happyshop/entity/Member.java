@@ -1,10 +1,12 @@
-package com.project.happyshop.domain;
+package com.project.happyshop.entity;
 
 import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -16,15 +18,15 @@ public class Member {
     private Long id;
 
     /**
-     * busniess key: (email, provider)
+     * busniess key: (username, provider)
      */
-    private String email;
+    private String username;
 
     @Enumerated(EnumType.STRING)
     private SocialProvider provider;
 
+    private String email;
     private String password;
-    private String username;
     private String phoneNumber;
 
     @Embedded
@@ -32,6 +34,9 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<Order> orderList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private Set<MemberRole> memberRoles = new HashSet<>();
 
     public static Member createMember(
             String email,
