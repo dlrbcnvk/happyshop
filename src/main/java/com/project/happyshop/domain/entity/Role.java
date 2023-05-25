@@ -1,4 +1,4 @@
-package com.project.happyshop.entity;
+package com.project.happyshop.domain.entity;
 
 import lombok.*;
 
@@ -14,6 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Builder
+@Getter
 public class Role implements Serializable {
 
     @Id

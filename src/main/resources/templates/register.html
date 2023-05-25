@@ -3,11 +3,44 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/css/register.css">
 </head>
 <body>
-    <h1>회원가입 페이지</h1>
+    <h1>회원가입</h1>
     <form th:action="@{register}" method="post">
-
+        <div class="register-form">
+            <label for="username">아이디</label>
+            <input type="text" name="username" id="username" placeholder="username" required>
+        </div>
+        <div class="register-form">
+            <label for="password">비밀번호</label>
+            <input type="password" name="password" id="password" placeholder="비밀번호" required>
+        </div>
+        <div class="register-form">
+            <label for="email">이메일</label>
+            <input type="email" name="email" id="email" placeholder="이메일" required>
+        </div>
+        <div class="register-form">
+            <div id="phoneNumber">
+                <label for="phoneNumber">전화번호</label>
+                <input type="text" name="phoneNumber1" id="phoneNumber1" maxlength="3" required>
+                <span>-</span>
+                <input type="text" name="phoneNumber2" id="phoneNumber2" maxlength="4" required>
+                <span>-</span>
+                <input type="text" name="phoneNumber3" id="phoneNumber3" maxlength="4" required>
+            </div>
+        </div>
+        <div class="register-form" id="address">
+            <div>
+                <label for="address">주소</label>
+            </div>
+            <div>
+                <input type="text" name="juso" id="juso" maxlength="100" placeholder="도로명주소" required>
+                <input type="text" name="jusoDetail" id="jusoDetail" maxlength="100" placeholder="상세주소" required>
+                <input type="text" name="zipcode" id="zipcode" maxlength="10" placeholder="우편번호" required>
+            </div>
+        </div>
+        <input class="register-form" type="submit" value="회원가입">
     </form>
 </body>
 </html>

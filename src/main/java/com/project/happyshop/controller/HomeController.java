@@ -12,31 +12,16 @@ import javax.servlet.http.HttpSession;
 public class HomeController {
 
     @GetMapping("/")
-    public String index(HttpSession session) {
-        log.info("Session id = {}", session.getId());
-        log.info("Session = {}", session);
+    public String index() {
         return "index";
     }
 
-    @GetMapping("/register")
-    public String register() {
-        return "register";
-    }
+
 
     @GetMapping("/login")
-    public String login(HttpSession session) {
-        log.info("Session id = {}", session.getId());
-        log.info("Session = {}", session);
+    public String login() {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String login_post() {
-        return "redirect:/";
-    }
 
-    @PostMapping("/logout")
-    public String logout() {
-        return "redirect:/";
-    }
 }

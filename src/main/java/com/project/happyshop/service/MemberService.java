@@ -1,9 +1,10 @@
 package com.project.happyshop.service;
 
-import com.project.happyshop.entity.Address;
-import com.project.happyshop.entity.Member;
+import com.project.happyshop.domain.Address;
+import com.project.happyshop.domain.entity.Member;
 import com.project.happyshop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,8 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     /**
      * 회원가입
      */
@@ -26,6 +29,8 @@ public class MemberService {
         validateDuplicateMember(member);
         // 이메일, 비밀번호, 전화번호 형식이 맞는지 검사
         validateEmailPasswordPhoneFormat(member);
+        // 비밀번호 암호화
+        member.encodePassword(passwordEncoder);
         memberRepository.save(member);
         return member.getId();
     }
@@ -79,9 +84,9 @@ public class MemberService {
          * 이메일 조건: (영어,숫자)@영어.영어
          */
         String email = member.getEmail();
-        Pattern emailPattern = Pattern.compile("[a-zA-Z1-9]+@[a-zA-Z]+.[a-zA-Z]+");
+        Pattern emailPattern = Pattern.compile("[a-zA-Z1-9]+@[a-zA-Z]+(.[a-zA-Z]+)+");
         if (!emailPattern.matcher(email).matches()) {
-            throw new IllegalStateException("이메일은 (영어 또는 숫자)@영어.영어 형식이어야 합니다.");
+            throw new IllegalStateException("이메일은 (영어 또는 숫자)@영어.~~~ 형식이어야 합니다.");
         }
     }
 
@@ -108,7 +113,7 @@ public class MemberService {
         /**
          * 전화번호는 국내 번호에 한정됨.
          * 전화번호 조건: (2~3자리)-(3-4자리)-(4자리)
-         * 첫 2~3자리는 지역 번호, 010, 011 중 하나여야 함.
+         * 첫 2~3자리는 [지역 번호, 010, 011] 중 하나여야 함.
          * 지역번호
          *   서울: 02, 부산: 051, 대구: 053, 인천: 032, 광주: 062, 대전: 042, 울산 052,
          *   세종: 044, 경기: 031, 강원: 033, 충북: 043, 충남: 041, 전북: 063, 전남: 061,

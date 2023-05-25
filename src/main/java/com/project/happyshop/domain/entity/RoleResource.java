@@ -1,4 +1,4 @@
-package com.project.happyshop.entity;
+package com.project.happyshop.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,23 +8,23 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "MEMBER_ROLE")
+@Table(name = "ROLE_RESOURCE")
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Builder
-public class MemberRole {
+public class RoleResource {
 
     @Id
     @GeneratedValue
-    @Column(name = "member_role_id")
+    @Column(name = "role_resource_id")
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Role role;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "resource_id")
+    private Resource resource;
 }

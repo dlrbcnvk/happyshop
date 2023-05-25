@@ -1,5 +1,6 @@
-package com.project.happyshop.entity;
+package com.project.happyshop.domain.entity;
 
+import com.project.happyshop.domain.OrderStatus;
 import lombok.Getter;
 
 import javax.persistence.*;

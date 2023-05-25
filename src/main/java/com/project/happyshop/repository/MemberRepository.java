@@ -1,7 +1,7 @@
 package com.project.happyshop.repository;
 
-import com.project.happyshop.entity.Member;
-import com.project.happyshop.entity.SocialProvider;
+import com.project.happyshop.domain.entity.Member;
+import com.project.happyshop.domain.SocialProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

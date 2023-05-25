@@ -1,7 +1,9 @@
 package com.project.happyshop.security.config;
 
+import com.project.happyshop.security.authentication.handler.CommonAccessDeniedHandler;
 import com.project.happyshop.security.authentication.handler.FormAuthenticationFailureHandler;
 import com.project.happyshop.security.authentication.handler.FormAuthenticationSuccessHandler;
+import com.project.happyshop.security.service.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -15,8 +17,11 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.logout.DelegatingServerLogoutHandler;
@@ -36,6 +41,7 @@ public class DefaultSecurityConfig {
 
     private final FormAuthenticationSuccessHandler formAuthenticationSuccessHandler;
     private final FormAuthenticationFailureHandler formAuthenticationFailureHandler;
+    private final UserDetailsServiceImpl userDetailsService;
 
     // static 파일들은 spring security 에서 보안처리를 하지 않도록 해야 함
     @Bean
@@ -50,13 +56,15 @@ public class DefaultSecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/login").anonymous()
-                .antMatchers("/register").anonymous()
+                .antMatchers("/register", "/successRegister").anonymous()
                 .antMatchers("/logout").authenticated()
                 .anyRequest().authenticated();
 
         http
                 .exceptionHandling()
                 .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
+                .accessDeniedPage("/denied")
+                .accessDeniedHandler(accessDeniedHandler())
             .and()
                 .formLogin()
                 .loginPage("/login")
@@ -93,16 +101,6 @@ public class DefaultSecurityConfig {
     }
 
     /**
-     * 임시 계정
-     */
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user1 = User.withUsername("user").password("{noop}1111").authorities("ROLE_USER").build();
-
-        return new InMemoryUserDetailsManager(user1);
-    }
-
-    /**
      * Cors
      */
     @Bean
@@ -129,4 +127,24 @@ public class DefaultSecurityConfig {
     public ServletListenerRegistrationBean httpSessionEventPublisher() {
         return new ServletListenerRegistrationBean(new HttpSessionEventPublisher());
     }
+
+    /**
+     * PasswordEncoder
+     */
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    /**
+     * AccessDeniedHandler
+     */
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        CommonAccessDeniedHandler commonAccessDeniedHandler = new CommonAccessDeniedHandler();
+        commonAccessDeniedHandler.setErrorPage("/denied");
+        return commonAccessDeniedHandler;
+    }
+
+
 }

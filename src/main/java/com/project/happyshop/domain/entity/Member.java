@@ -1,6 +1,9 @@
-package com.project.happyshop.entity;
+package com.project.happyshop.domain.entity;
 
+import com.project.happyshop.domain.Address;
+import com.project.happyshop.domain.SocialProvider;
 import lombok.Getter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -32,10 +35,10 @@ public class Member {
     @Embedded
     private Address address;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Order> orderList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private Set<MemberRole> memberRoles = new HashSet<>();
 
     public static Member createMember(
@@ -63,5 +66,9 @@ public class Member {
         this.phoneNumber = phoneNumber;
         this.address = address;
         return this.id;
+    }
+
+    public void encodePassword(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(this.password);
     }
 }

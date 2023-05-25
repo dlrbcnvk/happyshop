@@ -1,8 +1,10 @@
 package com.project.happyshop.security.authentication.handler;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
@@ -25,12 +27,20 @@ public class FormAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 
+        String errorMessage = null;
+        if (exception instanceof UsernameNotFoundException) {
+            errorMessage = "사용자가 존재하지 않습니다.";
+        } else if (exception instanceof BadCredentialsException) {
+            errorMessage = "아이디 혹은 비밀번호가 일치하지 않습니다.";
+        } else {
+            errorMessage = "인증에 실패했습니다. 웹 관리자에게 문의하십시오.";
+        }
         log.info("log in failed");
 
         setDefaultFailureUrl("/login?error=true");
 
         super.onAuthenticationFailure(request, response, exception);
 
-        request.getSession().setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, "Authentication failed");
+        request.getSession().setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, errorMessage);
     }
 }
