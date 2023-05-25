@@ -8,6 +8,7 @@
 </head>
 <body>
     <h1 class="login-form">로그인 페이지</h1>
+    <h2 th:if="${param.status}" th:text="|${param.username} 님 회원가입 성공! 로그인 해주세요😊|"></h2>
     <form th:action="@{/login}" method="post" class="login-form">
         <input type="hidden" th:name="_csrf" th:value="${_csrf.token}">
         <div>

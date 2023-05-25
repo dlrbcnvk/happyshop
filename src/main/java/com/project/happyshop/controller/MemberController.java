@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.UUID;
 
@@ -26,7 +27,7 @@ public class MemberController {
     }
 
     @PostMapping("/register")
-    public String register(UserDto userDto) {
+    public String register(UserDto userDto, RedirectAttributes redirectAttributes) {
 
         log.info(userDto.toString());
         Member member = Member.createMember(
@@ -38,8 +39,6 @@ public class MemberController {
                 new Address(userDto.getJuso(), userDto.getJusoDetail(), userDto.getZipcode())
         );
 
-
-
         try {
             memberService.join(member);
         } catch (IllegalStateException e) {
@@ -47,7 +46,9 @@ public class MemberController {
             return "redirect:/register";
         }
 
-        return "redirect:/successRegister";
+        redirectAttributes.addAttribute("status", true);
+        redirectAttributes.addAttribute("username", member.getUsername());
+        return "redirect:/login";
     }
 
 
