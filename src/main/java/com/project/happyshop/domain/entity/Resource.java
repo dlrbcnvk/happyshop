@@ -34,7 +34,7 @@ public class Resource implements Serializable {
     @Column(name = "resource_type")
     private String resourceType;
 
-    @OneToMany(mappedBy = "resource")
+    @OneToMany(mappedBy = "resource", fetch = FetchType.LAZY)
     private Set<RoleResource> roleResources = new HashSet<>();
 
     public void addRoleResource(RoleResource roleResource) {

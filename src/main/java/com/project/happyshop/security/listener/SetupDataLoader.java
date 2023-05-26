@@ -7,6 +7,7 @@ import com.project.happyshop.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     private final JpaMemberRepository jpaMemberRepository;
     private final JpaMemberRoleRepository jpaMemberRoleRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     private static AtomicInteger count = new AtomicInteger(0);
 
     @Override
@@ -42,7 +45,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         alreadySetup = true;
     }
 
-    // TODO username, password 정보들을 설정파일(application.yml -> gitignore)에 따로 둬야 함
+    // TODO username, password 정보들을 설정파일(application.yml -> gitignore)에 따로 둬서 감춰야함
     private void setupSecurityResources() {
         Set<Role> roles1 = new HashSet<>();
         Role adminRole = createRoleIfNotFound("ROLE_ADMIN", "관리자");
@@ -50,7 +53,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         createResourceIfNotFound("/admin/**", "", roles1, "url");
         createMemberIfNotFound(
                 "admin",
-                "pass",
+                passwordEncoder.encode("pass"),
                 "admin@gmail.com",
                 SocialProvider.LOCAL,
                 "010-1234-1234",
@@ -62,7 +65,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         roles2.add(managerRole);
         createMemberIfNotFound(
                 "manager",
-                "pass",
+                passwordEncoder.encode("pass"),
                 "manager@gmail.com",
                 SocialProvider.LOCAL,
                 "010-1234-1234",
@@ -76,7 +79,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         createResourceIfNotFound("/members/**", "", roles3, "url");
         createMemberIfNotFound(
                 "user",
-                "pass",
+                passwordEncoder.encode("pass"),
                 "user@gmail.com",
                 SocialProvider.LOCAL,
                 "010-1234-1234",
@@ -124,6 +127,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             role = Role.builder()
                     .roleName(roleName)
                     .roleDesc(roleDesc)
+                    .memberRoles(new HashSet<>())
+                    .roleResources(new HashSet<>())
                     .build();
         }
         return jpaRoleRepository.save(role);
@@ -139,6 +144,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
                     .httpMethod(httpMethod)
                     .resourceType(resourceType)
                     .orderNum(count.incrementAndGet())
+                    .roleResources(new HashSet<>())
                     .build();
         }
         jpaResourceRepository.save(resource);

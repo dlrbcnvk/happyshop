@@ -28,10 +28,10 @@ public class Role implements Serializable {
     @Column(name = "role_desc")
     private String roleDesc;
 
-    @OneToMany(mappedBy = "role")
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
     private Set<MemberRole> memberRoles = new HashSet<>();
 
-    @OneToMany(mappedBy = "role")
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
     private Set<RoleResource> roleResources = new HashSet<>();
 
     public void addRoleResource(RoleResource roleResource) {
