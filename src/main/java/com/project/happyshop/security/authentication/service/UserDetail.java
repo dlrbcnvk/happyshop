@@ -1,4 +1,4 @@
-package com.project.happyshop.security.service;
+package com.project.happyshop.security.authentication.service;
 
 import com.project.happyshop.domain.entity.Member;
 import lombok.Getter;

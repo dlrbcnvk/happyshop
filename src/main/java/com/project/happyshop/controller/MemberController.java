@@ -23,11 +23,11 @@ public class MemberController {
 
     @GetMapping("/register")
     public String register() {
-        return "register";
+        return "/member/login/register";
     }
 
     @PostMapping("/register")
-    public String register(UserDto userDto, RedirectAttributes redirectAttributes) {
+    public String register(UserDto userDto) {
 
         log.info(userDto.toString());
         Member member = Member.createMember(
@@ -46,10 +46,11 @@ public class MemberController {
             return "redirect:/register";
         }
 
-        redirectAttributes.addAttribute("status", true);
-        redirectAttributes.addAttribute("username", member.getUsername());
-        return "redirect:/login";
+        return "redirect:/successRegister";
     }
 
-
+    @GetMapping("/successRegister")
+    public String successRegister() {
+        return "/member/login/successRegister";
+    }
 }

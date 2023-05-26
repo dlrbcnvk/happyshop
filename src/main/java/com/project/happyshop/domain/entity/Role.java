@@ -33,4 +33,9 @@ public class Role implements Serializable {
 
     @OneToMany(mappedBy = "role")
     private Set<RoleResource> roleResources = new HashSet<>();
+
+    public void addRoleResource(RoleResource roleResource) {
+        roleResources.add(roleResource);
+        roleResource.setRole(this);
+    }
 }

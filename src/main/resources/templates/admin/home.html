@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Page</title>
+    <style>
+        .management {
+            display: flex;
+            flex-direction: column;
+        }
+        .management a {
+            margin-bottom: 20px;
+        }
+        .management a:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome">
+        <p th:text="${member.username} 관리자님. 환영합니다."></p>
+        <a th:href="@{/logout}">로그아웃</a>
+    </div>
+    <br>
+    <div class="management">
+        <a th:href="@{/admin/members}">사용자관리</a>
+        <a th:href="@{/admin/roles}">권한관리</a>
+        <a th:href="@{/admin/resources}">자원관리</a>
+    </div>
+</body>
+</html>

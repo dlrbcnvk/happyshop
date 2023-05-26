@@ -2,10 +2,11 @@ package com.project.happyshop.domain.entity;
 
 import com.project.happyshop.domain.Address;
 import com.project.happyshop.domain.SocialProvider;
-import lombok.Getter;
+import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -13,7 +14,8 @@ import java.util.Set;
 
 @Entity
 @Getter
-public class Member {
+@ToString(exclude = {"password", "orderList"})
+public class Member implements Serializable {
 
     @Id
     @GeneratedValue
@@ -41,19 +43,23 @@ public class Member {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private Set<MemberRole> memberRoles = new HashSet<>();
 
+    public Member() {
+
+    }
+
     public static Member createMember(
             String email,
             SocialProvider provider,
-            String password,
             String username,
+            String password,
             String phoneNumber,
             Address address
     ) {
         Member member = new Member();
-        member.email = email;
-        member.provider = provider;
-        member.password = password;
         member.username = username;
+        member.password = password;
+        member.provider = provider;
+        member.email = email;
         member.phoneNumber = phoneNumber;
         member.address = address;
         return member;

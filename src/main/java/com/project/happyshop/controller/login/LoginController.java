@@ -1,18 +1,21 @@
 package com.project.happyshop.controller.login;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class LoginController {
 
-    @PostMapping("/login")
-    public String login_post() {
-        return "redirect:/";
+    @GetMapping("/login")
+    public String login() {
+        return "login";
     }
 
-    @PostMapping("/logout")
-    public String logout() {
+    @PostMapping("/login")
+    public String login_post() {
         return "redirect:/";
     }
 }

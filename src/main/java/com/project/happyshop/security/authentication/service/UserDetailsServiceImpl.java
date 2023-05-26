@@ -1,8 +1,8 @@
-package com.project.happyshop.security.service;
+package com.project.happyshop.security.authentication.service;
 
 import com.project.happyshop.domain.entity.Member;
 import com.project.happyshop.domain.SocialProvider;
-import com.project.happyshop.exception.EmailAndProviderNotFoundException;
+import com.project.happyshop.exception.UsernameAndProviderNotFoundException;
 import com.project.happyshop.repository.JpaMemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Member findMember = jpaMemberRepository.findByUsernameAndProvider(username, SocialProvider.LOCAL);
 
         if (findMember == null) {
-            throw new EmailAndProviderNotFoundException("No member found with username and local provider: " + username);
+            throw new UsernameAndProviderNotFoundException("No member found with username and provider: {" + username + ", " + SocialProvider.LOCAL + "}");
         }
 
         Set<String> userRoles = findMember.getMemberRoles()

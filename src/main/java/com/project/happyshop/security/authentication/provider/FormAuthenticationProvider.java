@@ -1,6 +1,6 @@
 package com.project.happyshop.security.authentication.provider;
 
-import com.project.happyshop.security.service.UserDetail;
+import com.project.happyshop.security.authentication.service.UserDetail;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -31,7 +31,6 @@ public class FormAuthenticationProvider implements AuthenticationProvider {
         UserDetails userDetails = null;
 
         try {
-
             // 사용자 조회
             userDetails = userDetailsService.loadUserByUsername(loginId);
 

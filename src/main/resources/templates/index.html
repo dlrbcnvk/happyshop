@@ -1,10 +1,9 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8">
-</head>
+<head th:replace="layout/header::userHead"></head>
 <body>
+    <div th:replace="layout/top::header"></div>
     <p>happyshop 쇼핑몰 입니다.</p>
 
     <div sec:authorize="isAnonymous()" class="anonymous">
@@ -15,10 +14,12 @@
 
     <div sec:authorize="isAuthenticated()" class="authenticated">
         <h2>isAuthenticated()</h2>
-        <p>인증된 사용자</p>
+        <p th:text="|인증된 사용자 ${member.username} 님|"></p>
         <form th:action="@{/logout}" method="post">
             <input type="submit" value="로그아웃">
         </form>
     </div>
+
+    <div th:replace="layout/footer::footer"></div>
 </body>
 </html>

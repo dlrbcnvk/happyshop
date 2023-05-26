@@ -14,6 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
 public class Resource implements Serializable {
 
     @Id
@@ -35,4 +36,9 @@ public class Resource implements Serializable {
 
     @OneToMany(mappedBy = "resource")
     private Set<RoleResource> roleResources = new HashSet<>();
+
+    public void addRoleResource(RoleResource roleResource) {
+        roleResources.add(roleResource);
+        roleResource.setResource(this);
+    }
 }
