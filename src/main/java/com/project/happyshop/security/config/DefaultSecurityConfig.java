@@ -35,7 +35,7 @@ public class DefaultSecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .antMatchers("/static/js/**", "/static/images/**", "/static/css/**", "static/scss/**");
+                .antMatchers("/static/bootstrap-5.3.0-alpha3-dist/js/**", "/static/images/**", "/static/bootstrap-5.3.0-alpha3-dist/css/**", "static/scss/**");
     }
 
     @Bean
