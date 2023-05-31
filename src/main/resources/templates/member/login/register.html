@@ -4,9 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <head th:replace="layout/header::userHead"></head>
+    <style>
+        .phoneNumber input {
+            width: 80px;
+        }
+    </style>
 </head>
 <body>
-    <div class="text-center">
+    <div class="text-center mt-5">
         <h1>회원가입</h1>
     </div>
     <div class="row justify-content-center my-5">
@@ -25,13 +30,13 @@
                     <input type="email" class="form-control" name="email" id="email" placeholder="이메일" required>
                 </div>
                 <div class="mb-3">
-                    <div id="phoneNumber">
-                        <label for="phoneNumber">전화번호</label>
-                        <input type="text" name="phoneNumber1" id="phoneNumber1" maxlength="3" required>
-                        <span>-</span>
-                        <input type="text" name="phoneNumber2" id="phoneNumber2" maxlength="4" required>
-                        <span>-</span>
-                        <input type="text" name="phoneNumber3" id="phoneNumber3" maxlength="4" required>
+                    <label for="phoneNumber">전화번호</label>
+                    <div class="phoneNumber" id="phoneNumber">
+                        <input  type="text" name="phoneNumber1" id="phoneNumber1" maxlength="3" required>
+                        <span class="mx-1">-</span>
+                        <input  type="text" name="phoneNumber2" id="phoneNumber2" maxlength="4" required>
+                        <span class="mx-1">-</span>
+                        <input  type="text" name="phoneNumber3" id="phoneNumber3" maxlength="4" required>
                     </div>
                 </div>
                 <div class="mb-3" id="address">
@@ -39,9 +44,9 @@
                         <label for="address">주소</label>
                     </div>
                     <div class="mb-3">
-                        <input type="text" name="juso" id="juso" maxlength="100" placeholder="도로명주소" required>
-                        <input type="text" name="jusoDetail" id="jusoDetail" maxlength="100" placeholder="상세주소" required>
-                        <input type="text" name="zipcode" id="zipcode" maxlength="10" placeholder="우편번호" required>
+                        <input class="col-12 mb-3" type="text" name="juso" id="juso" maxlength="100" placeholder="도로명주소" required>
+                        <input class="col-12 mb-3" type="text" name="jusoDetail" id="jusoDetail" maxlength="100" placeholder="상세주소" required>
+                        <input class="col-12 mb-3" type="text" name="zipcode" id="zipcode" maxlength="10" placeholder="우편번호" required>
                     </div>
                 </div>
                 <input class="btn btn-primary" type="submit" value="회원가입">

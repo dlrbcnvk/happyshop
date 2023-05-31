@@ -53,7 +53,7 @@ public class MemberServiceTest {
                 "dlrbcnvkgmail.com",
                 SocialProvider.LOCAL,
                 "34254325~",
-                "sdsad",
+                "dkssudgktpdy!",
                 "010-3333-1234",
                 new Address("경기도", "어느 집", "12345")
         );
@@ -67,7 +67,7 @@ public class MemberServiceTest {
                 "dlrbcnvk@gmail.com",
                 SocialProvider.LOCAL,
                 "34254325",
-                "sdsad",
+                "dkssudgktpdy",
                 "010-3333-1234",
                 new Address("경기도", "어느 집", "12345")
         );
@@ -81,7 +81,7 @@ public class MemberServiceTest {
                 "dlrbcnvk@gmail.com",
                 SocialProvider.LOCAL,
                 "342543",
-                "sdsad",
+                "dkss",
                 "010-3333-1234",
                 new Address("경기도", "어느 집", "12345")
         );
@@ -95,7 +95,7 @@ public class MemberServiceTest {
                 "dlrbcnvk@gmail.com",
                 SocialProvider.LOCAL,
                 "dksjfksaljfklsef1234asdljfks",
-                "sdsad",
+                "1asdkljfjkdlsajf1234asdfasd!",
                 "010-3333-1234",
                 new Address("경기도", "어느 집", "12345")
         );
@@ -109,7 +109,7 @@ public class MemberServiceTest {
                 "dlrbcnvk@gmail.com",
                 SocialProvider.LOCAL,
                 "34254325~",
-                "sdsad",
+                "dkssudgktpdy!",
                 "01033331234",
                 new Address("경기도", "어느 집", "12345")
         );
@@ -123,7 +123,7 @@ public class MemberServiceTest {
                 "dlrbcnvk@gmail.com",
                 SocialProvider.LOCAL,
                 "34254325~",
-                "sdsad",
+                "dkssudgktpdy!",
                 "22-1234-1234",
                 new Address("경기도", "어느 집", "12345")
         );
@@ -136,7 +136,7 @@ public class MemberServiceTest {
                 "dlrbcnvk@gmail.com",
                 SocialProvider.LOCAL,
                 "34254325~",
-                "sdsad",
+                "dkssudgktpdy!",
                 "010-1234-1234",
                 new Address("경기도", "어느 집", "12345")
         );
@@ -148,7 +148,7 @@ public class MemberServiceTest {
                 "dlrbcnvk@naver.com",
                 SocialProvider.NAVER,
                 "12341234",
-                "이자시",
+                "dkssudgktpdy!",
                 "010-4321-4321",
                 new Address("경기도", "어느 집", "12345")
         );

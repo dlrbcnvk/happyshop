@@ -2,18 +2,27 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <header th:fragment="header">
-    <div class="inner">
+    <div class="inner m-3">
+        <div class="title">
+            <a th:href="@{/}" class="title h1">HappyShop</a>
+        </div>
 
-        <a th:href="@{/}" class="title">HappyShop</a>
-
-        <ul class="menu">
-            <li sec:authorize="isAnonymous()"><a th:href="@{/login}">로그인</a></li>
-            <li sec:authorize="isAnonymous()"><a th:href="@{/register}">회원가입</a></li>
-            <li sec:authorize="isAuthenticated()">
-                <form th:action="@{/logout}" method="post"><input type="submit" value="로그아웃"></form>
+        <ul class="menu nav justify-content-end mt-3" style="border: 1px solid red">
+            <li class="nav-item" sec:authorize="isAnonymous()">
+                <a class="nav-link" th:href="@{/login}">로그인</a>
             </li>
-            <li sec:authorize="hasAuthority('ROLE_ADMIN')"><a th:href="@{/admin}">관리자</a></li>
-            <li><a th:href="@{/}">HOME</a></li>
+            <li class="nav-item" sec:authorize="isAnonymous()">
+                <a class="nav-link" th:href="@{/register}">회원가입</a>
+            </li>
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a class="nav-link" th:href="@{/logout}">로그아웃</a>
+            </li>
+            <li class="nav-item" sec:authorize="hasAuthority('ROLE_ADMIN')">
+                <a class="nav-link" th:href="@{/admin}">관리자</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/}">HOME</a>
+            </li>
         </ul>
     </div>
 </header>

@@ -7,25 +7,37 @@
     <title>로그인</title>
 </head>
 <body>
-    <h1 class="login-form">로그인 페이지</h1>
-    <h2 th:if="${param.status}" th:text="|${param.username} 님 회원가입 성공! 로그인 해주세요😊|"></h2>
-    <form th:action="@{/login}" method="post" class="login-form">
-        <input type="hidden" th:name="_csrf" th:value="${_csrf.token}">
-        <div>
+    <div class="inner m-3">
 
-            <p>아이디와 비밀번호를 입력해주세요.</p>
+        <div class="row justify-content-center my-5">
+            <div class="col-lg-6">
+                <h1 class="login-form">로그인 페이지</h1>
+                <h2 th:if="${param.status}" th:text="|${param.username} 님 회원가입 성공! 로그인 해주세요😊|"></h2>
+
+                <form th:action="@{/login}" method="post" class="login-form">
+                    <input type="hidden" th:name="_csrf" th:value="${_csrf.token}">
+                    <div class="">
+                        <p>아이디와 비밀번호를 입력해주세요.</p>
+                    </div>
+                    <div class="login-form my-3">
+                        <label for="username" class="form-label">아이디</label>
+                        <input type="text" name="username" id="username" class="form-control" required>
+                    </div>
+                    <div class="login-form my-3">
+                        <label for="password" class="form-label">비밀번호</label>
+                        <input type="password" name="password" id="password" class="form-control" required>
+                    </div>
+                    <div class="login-form my-5">
+                        <input type="submit" value="로그인" class="btn btn-success">
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="login-form">
-            <label for="username">Enter your name: </label>
-            <input type="text" name="username" id="username" placeholder="아이디" required>
+
+
+
+            <head th:replace="layout/footer::footer"></head>
         </div>
-        <div class="login-form">
-            <label for="password">Enter your password: </label>
-            <input type="password" name="password" id="password" placeholder="비밀번호" required>
-        </div>
-        <div class="login-form">
-            <input type="submit" value="로그인">
-        </div>
-    </form>
+    </div>
 </body>
 </html>

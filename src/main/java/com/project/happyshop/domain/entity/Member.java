@@ -43,6 +43,9 @@ public class Member implements Serializable {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private Set<MemberRole> memberRoles = new HashSet<>();
 
+    @OneToMany(mappedBy = "items", fetch = FetchType.LAZY)
+    private List<Item> items = new ArrayList<>();
+
     public Member() {
 
     }
