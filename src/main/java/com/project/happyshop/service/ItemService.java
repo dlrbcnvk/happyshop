@@ -7,15 +7,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ItemService {
 
     private final JpaItemRepository jpaItemRepository;
-    private final MemberService memberService;
 
-    @Transactional
-    public void save(Item item, Member member) {
+    public void save(Item item) {
+        jpaItemRepository.save(item);
+    }
 
+    @Transactional(readOnly = true)
+    public List<Item> findByMember(Member member) {
+        return jpaItemRepository.findBySeller(member);
     }
 }

@@ -4,6 +4,7 @@ import com.project.happyshop.domain.Address;
 import com.project.happyshop.domain.entity.Member;
 import com.project.happyshop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,7 @@ import java.util.regex.Pattern;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -95,6 +97,7 @@ public class MemberService {
          * 비밀번호 조건: 8자리 이상, 연속된 3자리 숫자 안됨, 특수기호 ~!@#$%^&*()_+ 중 하나 이상 포함할 것
          */
         String password = member.getPassword();
+        log.info("비밀번호={}, 비밀번호 길이={}", password, password.length());
         if (password.length() < 8) {
             throw new IllegalStateException("비밀번호는 8자리 이상이어야 합니다.");
         }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -26,6 +27,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     private final JpaResourceRepository jpaResourceRepository;
     private final JpaRoleResourceRepository jpaRoleResourceRepository;
     private final JpaMemberRepository jpaMemberRepository;
+    private final MemberRepository memberRepository;
     private final JpaMemberRoleRepository jpaMemberRoleRepository;
 
     private final PasswordEncoder passwordEncoder;
@@ -89,18 +91,22 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     @Transactional
     public Member createMemberIfNotFound(String username, String password, String email, SocialProvider provider, String phoneNumber, Address address, Set<Role> roles) {
-        Member member = jpaMemberRepository.findByUsernameAndProvider(username, provider);
-        if (member == null) {
+        List<Member> memberList = memberRepository.findByEmailAndProvider(email, provider);
+        Member member;
+        if (memberList.size() == 0) {
             member = Member.createMember(email, provider, username, password, phoneNumber, address);
             jpaMemberRepository.save(member);
+        } else {
+            member = memberList.get(0);
         }
 
-        Set<MemberRole> memberRoles = member.getMemberRoles();
-        Member finalMember = member;
-        Set<MemberRole> collect = roles.stream()
-                .map(role -> createMemberRoleIfNotFound(finalMember, role))
-                .collect(Collectors.toSet());
-        memberRoles.addAll(collect);
+        if (member != null) {
+            Set<MemberRole> memberRoles = member.getMemberRoles();
+            Set<MemberRole> collect = roles.stream()
+                    .map(role -> createMemberRoleIfNotFound(member, role))
+                    .collect(Collectors.toSet());
+            memberRoles.addAll(collect);
+        }
 
         return member;
     }
@@ -109,12 +115,11 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     public MemberRole createMemberRoleIfNotFound(Member member, Role role) {
         MemberRole memberRole = jpaMemberRoleRepository.findByMemberAndRole(member, role);
         if (memberRole == null) {
-            memberRole = MemberRole.builder()
-                    .member(member)
-                    .role(role)
-                    .build();
+            memberRole = new MemberRole();
+            memberRole.setMemberAndRole(member, role);
+            jpaMemberRoleRepository.save(memberRole);
         }
-        return jpaMemberRoleRepository.save(memberRole);
+        return memberRole;
     }
 
 
@@ -124,12 +129,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         Role role = jpaRoleRepository.findByRoleName(roleName);
 
         if (role == null) {
-            role = Role.builder()
-                    .roleName(roleName)
-                    .roleDesc(roleDesc)
-                    .memberRoles(new HashSet<>())
-                    .roleResources(new HashSet<>())
-                    .build();
+            role = new Role();
+            role.setNameAndDesc(roleName, roleDesc);
         }
         return jpaRoleRepository.save(role);
     }
@@ -139,13 +140,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         Resource resource = jpaResourceRepository.findByResourceNameAndHttpMethod(resourceName, httpMethod);
 
         if (resource == null) {
-            resource = Resource.builder()
-                    .resourceName(resourceName)
-                    .httpMethod(httpMethod)
-                    .resourceType(resourceType)
-                    .orderNum(count.incrementAndGet())
-                    .roleResources(new HashSet<>())
-                    .build();
+            resource = new Resource();
+            resource.setResourceInfos(resourceName, httpMethod, count.incrementAndGet(), resourceType);
         }
         jpaResourceRepository.save(resource);
         for (Role role : roleSet) {
@@ -159,10 +155,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     public RoleResource createRoleResourceIfNotFound(Role role, Resource resource) {
         RoleResource roleResource = jpaRoleResourceRepository.findByRoleAndResource(role, resource);
         if (roleResource == null) {
-            roleResource = RoleResource.builder()
-                    .role(role)
-                    .resource(resource)
-                    .build();
+            roleResource = new RoleResource();
+            roleResource.setRoleAndResource(role, resource);
             jpaRoleResourceRepository.save(roleResource);
         }
         return roleResource;

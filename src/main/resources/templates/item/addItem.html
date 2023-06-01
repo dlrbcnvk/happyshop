@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/header::userHead">
+</head>
+<body>
+    <p class="h1" th:text="|${member.username} 님 상품등록 페이지|"></p>
+
+    <div class="row justify-content-center my-5">
+        <div class="col-lg-6" style="border: 1px solid red">
+            <form th:action="@{/items/add}" method="post">
+                <div class="mb-3">
+                    <label for="seller" class="form-label">판매자</label>
+                    <input type="text" class="form-control" name="seller" id="seller" disabled th:placeholder="${member.username}">
+                </div>
+                <div class="mb-3">
+                    <label for="imageUrl" class="form-label">이미지 URL</label>
+                    <input type="text" class="form-control" name="imageUrl" id="imageUrl">
+                </div>
+
+                <div class="mb-3">
+                    <label for="itemName">상품명</label>
+                    <input type="text" class="form-control" name="itemName" id="itemName" required>
+                </div>
+                <div class="mb-3">
+                    <label for="price">가격</label>
+                    <input type="text" class="form-control" name="price" id="price" required>
+                </div>
+                <div class="mb-3">
+                    <label for="quantity">수량</label>
+                    <input type="text" class="form-control" name="quantity" id="quantity" required>
+                </div>
+                <div class="mb-3">
+                    <label for="description">상품설명</label>
+                    <input type="text" class="form-control" name="description" id="description" required>
+                </div>
+                <input type="submit" class="btn btn-primary my-3" value="상품 등록">
+            </form>
+        </div>
+    </div>
+</body>
+</html>

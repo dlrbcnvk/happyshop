@@ -33,8 +33,8 @@ public class MemberController {
         Member member = Member.createMember(
                 userDto.getEmail(),
                 SocialProvider.LOCAL,
-                userDto.getPassword(),
                 userDto.getUsername(),
+                userDto.getPassword(),
                 userDto.getPhoneNumber1() + "-" + userDto.getPhoneNumber2() + "-" + userDto.getPhoneNumber3(),
                 new Address(userDto.getJuso(), userDto.getJusoDetail(), userDto.getZipcode())
         );

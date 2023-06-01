@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="layout/header::userHead">
+        <title>판매자매니저</title>
+    </head>
+    <body>
+        <div th:replace="layout/top::header"></div>
+
+        <div class="inner m-3">
+            <div class="h1">
+                판매자 페이지
+            </div>
+
+            <div>
+                <a th:href="@{/items/add}" class="btn btn-primary">상품등록</a>
+            </div>
+
+            <div class="row justify-content-center m-5" style="border: 1px solid red">
+                <div class="col-12" style="border: 1px solid green">
+                    <div>상품 1</div>
+                </div>
+                <div class="col-12" style="border: 1px solid green">
+                    <div>상품 1</div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

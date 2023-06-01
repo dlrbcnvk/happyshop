@@ -13,7 +13,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Builder
 @Getter
 public class Role implements Serializable {
 
@@ -37,5 +36,10 @@ public class Role implements Serializable {
     public void addRoleResource(RoleResource roleResource) {
         roleResources.add(roleResource);
         roleResource.setRole(this);
+    }
+
+    public void setNameAndDesc(String roleName, String roleDesc) {
+        this.roleName = roleName;
+        this.roleDesc = roleDesc;
     }
 }
