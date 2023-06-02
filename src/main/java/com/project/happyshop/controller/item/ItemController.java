@@ -34,9 +34,10 @@ public class ItemController {
     public String seller(@AuthenticationPrincipal Member member, Model model) {
 
         Member findMember = memberService.findOne(member.getId());
-        List<Item> itemList = itemService.findByMember(findMember);
+        List<Item> itemList = findMember.getItems();
 
         model.addAttribute("itemList", itemList);
+
 
         return "item/seller";
     }

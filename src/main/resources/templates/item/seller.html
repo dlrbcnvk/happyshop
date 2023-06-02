@@ -46,7 +46,7 @@
                         <a th:href="@{/items/update/{param1}(param1=${item.id})}" class="btn btn-info m-1">수정</a>
                     </div>
                     <form class="col-1" th:action="@{/items/delete/{param1}(param1=${item.id})}" th:method="post">
-                        <button type="submit" formmethod="post" class="btn btn-danger m-1">삭제</button>
+                        <button type="submit" class="btn btn-danger m-1">삭제</button>
                     </form>
                 </div>
             </div>
