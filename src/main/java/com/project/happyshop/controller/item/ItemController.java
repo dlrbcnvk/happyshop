@@ -98,7 +98,7 @@ public class ItemController {
     }
 
     @Transactional
-    @GetMapping("/items/delete/{itemId}")
+    @PostMapping("/items/delete/{itemId}")
     public String deleteItem(
             @AuthenticationPrincipal Member member,
             @PathVariable("itemId") Long itemId
