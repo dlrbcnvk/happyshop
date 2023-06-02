@@ -1,6 +1,8 @@
 package com.project.happyshop.domain.entity;
 
+import com.project.happyshop.domain.dto.ItemDto;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -8,7 +10,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Getter
+@Data
 @ToString(exclude = {"seller"})
 public class Item implements Serializable {
 
@@ -52,6 +54,14 @@ public class Item implements Serializable {
         item.description = description;
         item.imageUrl = imageUrl;
         return item;
+    }
+
+    public void updateItem(ItemDto itemDto) {
+        this.name = itemDto.getItemName();
+        this.price = itemDto.getPrice();
+        this.quantity = itemDto.getQuantity();
+        this.description = itemDto.getDescription();
+        this.imageUrl = itemDto.getImageUrl();
     }
 
     // 기본 생성자

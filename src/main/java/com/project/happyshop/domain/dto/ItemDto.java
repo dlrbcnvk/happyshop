@@ -5,7 +5,7 @@ import lombok.ToString;
 
 @Data
 @ToString
-public class RegisterItemDto {
+public class ItemDto {
 
     private String itemName;
     private Integer price;

@@ -11,22 +11,28 @@ import java.util.List;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class RoleService {
 
     private final JpaRoleRepository jpaRoleRepository;
 
-    @Transactional
+    public void save(Role role) {
+        jpaRoleRepository.save(role);
+    }
+
+    public Role findByRoleName(String roleName) {
+        return jpaRoleRepository.findByRoleName(roleName);
+    }
+
     public Role getRole(long id) {
         return jpaRoleRepository.findById(id).orElse(new Role());
     }
 
-    @Transactional
     public List<Role> getRoles() {
         return jpaRoleRepository.findAll();
     }
 
-    @Transactional
     public void createRole(Role role) {
         jpaRoleRepository.save(role);
     }

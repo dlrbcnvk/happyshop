@@ -16,12 +16,38 @@
                 <a th:href="@{/items/add}" class="btn btn-primary">상품등록</a>
             </div>
 
-            <div class="row justify-content-center m-5" style="border: 1px solid red">
-                <div class="col-12" style="border: 1px solid green">
-                    <div>상품 1</div>
+            <div class="container">
+                <div class="row justify-content-center m-5 mb-0 text-center" style="border: 1px solid red">
+                    <div class="col-4" style="border: 1px solid green">
+                        <div>상품명</div>
+                    </div>
+                    <div class="col-2" style="border: 1px solid green">
+                        <div>가격</div>
+                    </div>
+                    <div class="col-2" style="border: 1px solid green">
+                        <div>수량</div>
+                    </div>
+                    <div class="col-2" style="border: 1px solid green">
+                        <div>바로가기</div>
+                    </div>
                 </div>
-                <div class="col-12" style="border: 1px solid green">
-                    <div>상품 1</div>
+
+                <div class="row justify-content-center align-items-center mx-5 mt-0" th:each="item : ${itemList}" style="border: 1px solid red">
+                    <div class="col-4" style="border: 1px solid green">
+                        <div th:text="${item.name}"></div>
+                    </div>
+                    <div class="col-2 text-end" style="border: 1px solid green">
+                        <div th:text="${item.price}"></div>
+                    </div>
+                    <div class="col-2 text-end" style="border: 1px solid green">
+                        <div th:text="${item.quantity}"></div>
+                    </div>
+                    <div class="col-1">
+                        <a th:href="@{/items/update/{param1}(param1=${item.id})}" class="btn btn-info m-1">수정</a>
+                    </div>
+                    <div class="col-1">
+                        <a th:href="@{/items/delete/{param1}(param1=${item.id})}" class="btn btn-danger m-1">삭제</a>
+                    </div>
                 </div>
             </div>
         </div>
