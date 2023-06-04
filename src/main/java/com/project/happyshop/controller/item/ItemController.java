@@ -113,4 +113,11 @@ public class ItemController {
 
         return "redirect:/items/seller";
     }
+
+    @GetMapping("/items/detail/{itemId}")
+    public String itemDetail(@PathVariable("itemId") Long itemId, Model model) {
+        Item findItem = itemService.findById(itemId);
+        model.addAttribute("item", findItem);
+        return "/item/itemDetail";
+    }
 }

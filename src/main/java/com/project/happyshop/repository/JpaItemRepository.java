@@ -9,4 +9,6 @@ import java.util.List;
 public interface JpaItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findBySeller(Member member);
+
+    List<Item> findBySellerNot(Member member);
 }

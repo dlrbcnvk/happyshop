@@ -46,7 +46,7 @@ public class DefaultSecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/login").anonymous()
-                .antMatchers("/register", "/successRegister").anonymous()
+                .antMatchers("/register", "/successRegister", "/items/detail/**").anonymous()
                 .antMatchers("/logout").authenticated()
                 .anyRequest().authenticated();
 

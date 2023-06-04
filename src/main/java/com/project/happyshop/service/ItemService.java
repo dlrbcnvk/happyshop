@@ -34,4 +34,12 @@ public class ItemService {
     public void deleteItem(Item item) {
         jpaItemRepository.delete(item);
     }
+
+    public List<Item> findAll() {
+        return jpaItemRepository.findAll();
+    }
+
+    public List<Item> findBySellerNot(Member member) {
+        return jpaItemRepository.findBySellerNot(member);
+    }
 }
