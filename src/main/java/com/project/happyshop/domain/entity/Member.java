@@ -23,7 +23,7 @@ public class Member implements Serializable {
     private Long id;
 
     /**
-     * busniess key: (username, provider)
+     * busniess key: (email, provider)
      */
     private String username;
 
@@ -33,6 +33,7 @@ public class Member implements Serializable {
     private String email;
     private String password;
     private String phoneNumber;
+    private String socialId;
 
     @Embedded
     private Address address;
@@ -68,13 +69,13 @@ public class Member implements Serializable {
         return member;
     }
 
-    public Long updateMember(String email, String password, String username, String phoneNumber, Address address) {
+    public Member updateMember(String email, String password, String username, String phoneNumber, Address address) {
         this.email = email;
         this.password = password;
         this.username = username;
         this.phoneNumber = phoneNumber;
         this.address = address;
-        return this.id;
+        return this;
     }
 
     public void encodePassword(PasswordEncoder passwordEncoder) {

@@ -3,7 +3,9 @@ package com.project.happyshop.security.config;
 import com.project.happyshop.security.authentication.handler.CommonAccessDeniedHandler;
 import com.project.happyshop.security.authentication.handler.FormAuthenticationFailureHandler;
 import com.project.happyshop.security.authentication.handler.FormAuthenticationSuccessHandler;
+import com.project.happyshop.security.authentication.service.CustomOAuth2UserService;
 import com.project.happyshop.security.authentication.service.UserDetailsServiceImpl;
+import com.project.happyshop.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
@@ -31,7 +34,10 @@ public class DefaultSecurityConfig {
     private final FormAuthenticationSuccessHandler formAuthenticationSuccessHandler;
     private final FormAuthenticationFailureHandler formAuthenticationFailureHandler;
     private final UserDetailsServiceImpl userDetailsService;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final MemberService memberService;
 
+    private final PasswordEncoder passwordEncoder;
 
     // static 파일들은 spring security 에서 보안처리를 하지 않도록 해야 함
     @Bean
@@ -74,6 +80,11 @@ public class DefaultSecurityConfig {
                 .invalidateHttpSession(true)
             ;
 
+        http
+                .oauth2Login(oauth2 ->
+                        oauth2.userInfoEndpoint(userInfoEndpointConfig ->
+                                userInfoEndpointConfig.userService(customOAuth2UserService)));
+
         http.cors().configurationSource(corsConfigurationSource()); // CorsConfigurer 설정 초기화
 
         http.csrf().ignoringAntMatchers("/rest/**"); // REST API 사용 시 csrf 비활성화 처리
@@ -106,6 +117,8 @@ public class DefaultSecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
 
+        passwordEncoder.encode("dd");
+
         return source;
     }
 
@@ -118,13 +131,7 @@ public class DefaultSecurityConfig {
         return new ServletListenerRegistrationBean(new HttpSessionEventPublisher());
     }
 
-    /**
-     * PasswordEncoder
-     */
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
+
 
     /**
      * AccessDeniedHandler

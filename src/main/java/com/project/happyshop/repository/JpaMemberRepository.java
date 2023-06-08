@@ -9,5 +9,12 @@ import org.springframework.stereotype.Repository;
 public interface JpaMemberRepository extends JpaRepository<Member, Long> {
 
     @EntityGraph(attributePaths = {"orderList", "memberRoles"})
+    Member findByEmailAndProvider(String email, SocialProvider provider);
+
+    /**
+     * LOCAL form 인증 서비스에서만 사용할 것.
+     * UserDetailsServiceImpl
+     */
+    @EntityGraph(attributePaths = {"orderList", "memberRoles"})
     Member findByUsernameAndProvider(String username, SocialProvider provider);
 }

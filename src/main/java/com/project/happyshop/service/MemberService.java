@@ -1,7 +1,9 @@
 package com.project.happyshop.service;
 
 import com.project.happyshop.domain.Address;
+import com.project.happyshop.domain.SocialProvider;
 import com.project.happyshop.domain.entity.Member;
+import com.project.happyshop.repository.JpaMemberRepository;
 import com.project.happyshop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,8 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final JpaMemberRepository jpaMemberRepository;
 
     /**
      * 회원가입
@@ -49,9 +53,16 @@ public class MemberService {
     public Member findOne(Long id) { return memberRepository.findOne(id); }
 
     /**
+     * (email, socialProvider) 로 회원조회
+     */
+    public Member findByEmailAndProvider(String email, SocialProvider socialProvider) {
+        return jpaMemberRepository.findByEmailAndProvider(email, socialProvider);
+    }
+
+    /**
      * 회원 수정
      */
-    public Long updateMember(Long id, String email, String password, String username, String phoneNumber, Address address) {
+    public Member updateMember(Long id, String email, String password, String username, String phoneNumber, Address address) {
         Member findMember = memberRepository.findOne(id);
         // id 로 조회한 회원이 없으면 에러
         if (findMember == null) {

@@ -31,6 +31,20 @@
                         <input type="submit" value="로그인" class="btn btn-success">
                     </div>
                 </form>
+                <h6 class="text-center">또는</h6>
+                <div class="container text-center">
+                    <div class="social row justify-content-center" style="border: 1px solid red">
+                        <div class="naver col-4">
+                            <a th:href="@{/oauth2/authorization/naver}">네이버</a>
+                        </div>
+                        <div class="google col-4">
+                            <a th:href="@{/oauth2/authorization/google}">구글</a>
+                        </div>
+                        <div class="kakao col-4">
+                            <a th:href="@{/oauth2/authorization/kakao}">카카오</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
