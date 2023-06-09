@@ -4,7 +4,7 @@ import com.project.happyshop.security.authentication.handler.CommonAccessDeniedH
 import com.project.happyshop.security.authentication.handler.FormAuthenticationFailureHandler;
 import com.project.happyshop.security.authentication.handler.FormAuthenticationSuccessHandler;
 import com.project.happyshop.security.authentication.service.CustomOAuth2UserService;
-import com.project.happyshop.security.authentication.service.UserDetailsServiceImpl;
+import com.project.happyshop.security.authentication.service.CustomUserDetailsService;
 import com.project.happyshop.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
@@ -14,13 +14,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -33,7 +30,7 @@ public class DefaultSecurityConfig {
 
     private final FormAuthenticationSuccessHandler formAuthenticationSuccessHandler;
     private final FormAuthenticationFailureHandler formAuthenticationFailureHandler;
-    private final UserDetailsServiceImpl userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
     private final CustomOAuth2UserService customOAuth2UserService;
     private final MemberService memberService;
 

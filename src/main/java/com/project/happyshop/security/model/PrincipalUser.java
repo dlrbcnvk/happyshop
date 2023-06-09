@@ -1,5 +1,6 @@
 package com.project.happyshop.security.model;
 
+import com.project.happyshop.domain.SocialProvider;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
@@ -14,6 +15,14 @@ public record PrincipalUser(ProviderUser providerUser) implements UserDetails, O
     @Override
     public String getName() {
         return providerUser().getUsername();
+    }
+
+    public String getEmail() {
+        return providerUser.getEmail();
+    }
+
+    public SocialProvider getSocialProvider() {
+        return providerUser.getSocialProvider();
     }
 
     @Override

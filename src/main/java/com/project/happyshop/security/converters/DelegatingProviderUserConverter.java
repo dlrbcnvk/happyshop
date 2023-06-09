@@ -2,6 +2,7 @@ package com.project.happyshop.security.converters;
 
 import com.project.happyshop.security.model.ProviderUser;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,6 +17,7 @@ public class DelegatingProviderUserConverter implements ProviderUserConverter<Pr
     public DelegatingProviderUserConverter() {
         List<ProviderUserConverter<ProviderUserRequest, ProviderUser>> providerUserConverters =
                 Arrays.asList(
+                        new UserDetailsProviderUserConverter(),
                         new OAuth2NaverProviderUserConverter()
                 );
         this.converters = Collections.unmodifiableList(new LinkedList<>(providerUserConverters));
@@ -23,6 +25,13 @@ public class DelegatingProviderUserConverter implements ProviderUserConverter<Pr
 
     @Override
     public ProviderUser converter(ProviderUserRequest providerUserRequest) {
+        Assert.notNull(providerUserRequest, "providerUserRequest cannot be null");
+        for (ProviderUserConverter<ProviderUserRequest, ProviderUser> converter : converters) {
+            ProviderUser providerUser = converter.converter(providerUserRequest);
+            if (providerUser != null) {
+                return providerUser;
+            }
+        }
         return null;
     }
 }

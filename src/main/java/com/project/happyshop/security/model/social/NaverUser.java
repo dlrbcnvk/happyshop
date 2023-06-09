@@ -28,6 +28,11 @@ public class NaverUser extends OAuth2ProviderUser {
     }
 
     @Override
+    public String getProvider() {
+        return "naver";
+    }
+
+    @Override
     public SocialProvider getSocialProvider() {
         return SocialProvider.NAVER;
     }

@@ -25,12 +25,11 @@ public class Member implements Serializable {
     /**
      * busniess key: (email, provider)
      */
-    private String username;
-
+    private String email;
     @Enumerated(EnumType.STRING)
     private SocialProvider provider;
 
-    private String email;
+    private String username;
     private String password;
     private String phoneNumber;
     private String socialId;

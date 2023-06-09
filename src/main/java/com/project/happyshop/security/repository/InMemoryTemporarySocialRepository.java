@@ -2,6 +2,7 @@ package com.project.happyshop.security.repository;
 
 import com.project.happyshop.domain.SocialProvider;
 import com.project.happyshop.security.model.ProviderUser;
+import lombok.Getter;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
@@ -34,6 +35,7 @@ public class InMemoryTemporarySocialRepository {
         users.remove(socialId);
     }
 
+    @Getter
     public class SocialUser {
         private String socialId;
         private SocialProvider socialProvider;

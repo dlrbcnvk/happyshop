@@ -17,39 +17,58 @@
     <div class="row justify-content-center my-5">
         <div class="col-lg-6">
             <form th:action="@{register}" method="post">
-                <div class="mb-3">
-                    <label for="username" class="form-label">아이디</label>
+
+                <div class="mb-3" th:if="${#strings.isEmpty(username)}">
+                    <label for="username" class="form-label">이름</label>
                     <input type="text" class="form-control" name="username" id="username" required>
                 </div>
-                <div class="mb-3">
+                <div class="mb-3" th:if="${not #strings.isEmpty(username)}">
+                    <label for="usernameExists" class="form-label">이름</label>
+                    <input type="text" class="form-control" name="username" id="usernameExists" required>
+                </div>
+
+
+                <div class="mb-3" th:if="${#strings.isEmpty(username)}">
                     <label for="password" class="form-label">비밀번호</label>
                     <input type="password" class="form-control" name="password" id="password" required>
                 </div>
-                <div class="mb-3">
+
+                <div class="mb-3" th:if="${#strings.isEmpty(email)}">
                     <label for="email" class="form-label">이메일</label>
                     <input type="email" class="form-control" name="email" id="email" required>
                 </div>
+                <div class="mb-3" th:if="${not #strings.isEmpty(email)}">
+                    <label for="emailExists" class="form-label">이메일</label>
+                    <input type="email" class="form-control" name="email" id="emailExists" required>
+                </div>
+
                 <div class="mb-3">
                     <label for="phoneNumber">전화번호</label>
                     <div class="phoneNumber" id="phoneNumber">
-                        <input  type="text" name="phoneNumber1" id="phoneNumber1" maxlength="3" required>
+                        <input type="text" name="phoneNumber1" id="phoneNumber1" maxlength="3" required>
                         <span class="mx-1">-</span>
-                        <input  type="text" name="phoneNumber2" id="phoneNumber2" maxlength="4" required>
+                        <input type="text" name="phoneNumber2" id="phoneNumber2" maxlength="4" required>
                         <span class="mx-1">-</span>
-                        <input  type="text" name="phoneNumber3" id="phoneNumber3" maxlength="4" required>
+                        <input type="text" name="phoneNumber3" id="phoneNumber3" maxlength="4" required>
                     </div>
                 </div>
+
                 <div class="mb-3" id="address">
                     <div>
                         <label for="address">주소</label>
                     </div>
                     <div class="mb-3">
-                        <input class="col-12 mb-3" type="text" name="juso" id="juso" maxlength="100" placeholder="도로명주소" required>
-                        <input class="col-12 mb-3" type="text" name="jusoDetail" id="jusoDetail" maxlength="100" placeholder="상세주소" required>
-                        <input class="col-12 mb-3" type="text" name="zipcode" id="zipcode" maxlength="10" placeholder="우편번호" required>
+                        <input class="col-12 mb-3" type="text" name="juso" id="juso" maxlength="100"
+                               placeholder="도로명주소" required>
+                        <input class="col-12 mb-3" type="text" name="jusoDetail" id="jusoDetail" maxlength="100"
+                               placeholder="상세주소" required>
+                        <input class="col-12 mb-3" type="text" name="zipcode" id="zipcode" maxlength="10"
+                               placeholder="우편번호" required>
                     </div>
                 </div>
+
                 <input class="btn btn-primary" type="submit" value="회원가입">
+
             </form>
         </div>
     </div>
