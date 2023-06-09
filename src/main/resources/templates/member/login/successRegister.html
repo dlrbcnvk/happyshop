@@ -7,6 +7,7 @@
 </head>
 <body>
     <h1>🥳🥳 회원가입 완료! 🥳🥳</h1>
-    <a th:href="@{/login}">로그인 하러 가기</a>
+    <a th:href="@{/login}" sec:authorize="isAnonymous()">로그인 하러 가기</a>
+    <a th:href="@{/}" sec:authorize="isAuthenticated()">홈으로 가기</a>
 </body>
 </html>

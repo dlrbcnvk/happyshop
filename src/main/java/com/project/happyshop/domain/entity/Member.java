@@ -68,6 +68,24 @@ public class Member implements Serializable {
         return member;
     }
 
+    public static Member createSocialMember(
+            String email,
+            SocialProvider provider,
+            String username,
+            String phoneNumber,
+            Address address,
+            String socialId
+    ) {
+        Member member = new Member();
+        member.username = username;
+        member.provider = provider;
+        member.email = email;
+        member.phoneNumber = phoneNumber;
+        member.address = address;
+        member.socialId = socialId;
+        return member;
+    }
+
     public Member updateMember(String email, String password, String username, String phoneNumber, Address address) {
         this.email = email;
         this.password = password;

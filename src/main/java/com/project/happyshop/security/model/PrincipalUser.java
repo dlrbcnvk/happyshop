@@ -25,6 +25,10 @@ public record PrincipalUser(ProviderUser providerUser) implements UserDetails, O
         return providerUser.getSocialProvider();
     }
 
+    public String getSocialId() {
+        return providerUser.getSocialId();
+    }
+
     @Override
     public Map<String, Object> getAttributes() {
         return providerUser.getAttributes();

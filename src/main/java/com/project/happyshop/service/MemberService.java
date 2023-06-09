@@ -36,7 +36,9 @@ public class MemberService {
         // 이메일, 비밀번호, 전화번호 형식이 맞는지 검사
         validateEmailPasswordPhoneFormat(member);
         // 비밀번호 암호화
-        member.encodePassword(passwordEncoder);
+        if (member.getProvider() == SocialProvider.LOCAL) {
+            member.encodePassword(passwordEncoder);
+        }
         memberRepository.save(member);
         return member.getId();
     }
@@ -104,6 +106,9 @@ public class MemberService {
     }
 
     private void validatePasswordFormat(Member member) {
+        if (member.getProvider() != SocialProvider.LOCAL) {
+            return;
+        }
         /**
          * 비밀번호 조건: 8자리 이상, 연속된 3자리 숫자 안됨, 특수기호 ~!@#$%^&*()_+ 중 하나 이상 포함할 것
          */

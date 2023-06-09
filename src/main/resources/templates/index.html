@@ -28,7 +28,7 @@
 
         <div sec:authorize="isAuthenticated()" class="authenticated">
             <h2>isAuthenticated()</h2>
-            <p th:text="|인증된 사용자 ${member.username} 님|"></p>
+            <p th:text="|${member.provider} 사용자 ${member.username} 님|"></p>
 
             <form th:action="@{/logout}" method="post" class="mb-3">
                 <input type="submit" value="로그아웃">

@@ -7,10 +7,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class UserDto {
+public class SocialUserDto {
 
     private String email;
-    private String password;
     private String username;
 
     private String phoneNumber1;

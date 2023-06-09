@@ -5,17 +5,16 @@ import com.project.happyshop.repository.JpaMemberRepository;
 import com.project.happyshop.security.model.ProviderUser;
 import com.project.happyshop.security.model.local.FormUser;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Collectors;
 
-
+@RequiredArgsConstructor
 public class UserDetailsProviderUserConverter implements ProviderUserConverter<ProviderUserRequest, ProviderUser> {
-
-    @Autowired
-    private JpaMemberRepository jpaMemberRepository;
 
     @Override
     @Transactional
@@ -25,16 +24,15 @@ public class UserDetailsProviderUserConverter implements ProviderUserConverter<P
         }
 
         Member member = providerUserRequest.member();
-        Member findMember = jpaMemberRepository.findById(member.getId()).orElseThrow();
 
         return FormUser.builder()
-                .id(findMember.getId() + "")
-                .username(findMember.getUsername())
-                .password(findMember.getPassword())
-                .email(findMember.getEmail())
-                .authorities(findMember.getMemberRoles().stream().map(memberRole ->
+                .id(member.getId() + "")
+                .username(member.getUsername())
+                .password(member.getPassword())
+                .email(member.getEmail())
+                .authorities(member.getMemberRoles().stream().map(memberRole ->
                     new SimpleGrantedAuthority(memberRole.getRole().getRoleName())).collect(Collectors.toList()))
-                .provider(findMember.getProvider().toString())
+                .provider(member.getProvider().toString())
                 .build();
     }
 }

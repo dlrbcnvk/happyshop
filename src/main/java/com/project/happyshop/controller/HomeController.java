@@ -1,5 +1,6 @@
 package com.project.happyshop.controller;
 
+import com.project.happyshop.domain.dto.SocialRegisterViewDto;
 import com.project.happyshop.domain.entity.Item;
 import com.project.happyshop.domain.entity.Member;
 import com.project.happyshop.domain.entity.MemberRole;
@@ -10,12 +11,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -28,8 +35,14 @@ public class HomeController {
     private final ItemService itemService;
     private final MemberService memberService;
 
+    private final PasswordEncoder passwordEncoder;
+
     @GetMapping("/")
-    public String index(@AuthenticationPrincipal PrincipalUser principalUser, Model model) {
+    public String index(
+            @AuthenticationPrincipal PrincipalUser principalUser,
+            Model model,
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes) {
 
         List<Item> itemList;
         if (principalUser != null) {
@@ -38,9 +51,10 @@ public class HomeController {
             if (findMember == null) {
                 // 회원은 아닌데 소셜로그인 버튼을 누른 사람
                 // 회원가입 페이지로 이동해야 함.
-                model.addAttribute("email", principalUser.getEmail());
-                model.addAttribute("username", principalUser.getUsername());
-                return "/member/login/register";
+                redirectAttributes.addAttribute("email", principalUser.getEmail());
+                redirectAttributes.addAttribute("username", principalUser.getUsername());
+
+                return "redirect:/register/social/{email}/{username}";
             } else {
                 // 회원
                 itemList = itemService.findBySellerNot(findMember);
@@ -53,5 +67,4 @@ public class HomeController {
         model.addAttribute("itemList", itemList);
         return "index";
     }
-
 }

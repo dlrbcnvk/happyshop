@@ -11,6 +11,7 @@ import com.project.happyshop.security.model.PrincipalUser;
 import com.project.happyshop.security.model.ProviderUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,20 +24,23 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service("userDetailsService")
-@RequiredArgsConstructor
 public class CustomUserDetailsService extends AbstractOAuth2UserService implements UserDetailsService {
 
-    private final JpaMemberRepository jpaMemberRepository;
+    @Autowired
+    private JpaMemberRepository jpaMemberRepository;
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        Member findMember = jpaMemberRepository.findByUsernameAndProvider(username, SocialProvider.LOCAL);
+        Member findMember = jpaMemberRepository.findByEmailAndProvider(email, SocialProvider.LOCAL);
 
         if (findMember == null) {
-            throw new UsernameAndProviderNotFoundException("No member found with username and provider: {" + username + ", " + SocialProvider.LOCAL + "}");
+            throw new UsernameAndProviderNotFoundException("No member found with email and provider: {" + email + ", " + SocialProvider.LOCAL + "}");
         }
+
+        findMember.getMemberRoles().stream().map(memberRole ->
+                memberRole.getRole().getRoleName());
 
         ProviderUserRequest providerUserRequest = new ProviderUserRequest(findMember);
         ProviderUser providerUser = providerUser(providerUserRequest);

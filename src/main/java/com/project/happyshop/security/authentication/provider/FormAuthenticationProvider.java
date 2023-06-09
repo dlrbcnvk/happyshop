@@ -1,6 +1,7 @@
 package com.project.happyshop.security.authentication.provider;
 
 import com.project.happyshop.security.authentication.service.UserDetail;
+import com.project.happyshop.security.model.PrincipalUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -28,17 +29,17 @@ public class FormAuthenticationProvider implements AuthenticationProvider {
         String loginId = auth.getName();
         String password = (String) auth.getCredentials();
 
-        UserDetails userDetails = null;
+        PrincipalUser principalUser;
 
         try {
             // 사용자 조회
-            userDetails = userDetailsService.loadUserByUsername(loginId);
+            principalUser = (PrincipalUser) userDetailsService.loadUserByUsername(loginId);
 
-            if (userDetails == null || !passwordEncoder.matches(password, userDetails.getPassword())) {
+            if (principalUser == null || !passwordEncoder.matches(password, principalUser.getPassword())) {
                 throw new BadCredentialsException("Invalid password");
             }
 
-            if (!userDetails.isEnabled()) {
+            if (!principalUser.isEnabled()) {
                 throw new BadCredentialsException("not user confirm");
             }
         } catch (UsernameNotFoundException e) {
@@ -53,9 +54,9 @@ public class FormAuthenticationProvider implements AuthenticationProvider {
         }
 
         return new UsernamePasswordAuthenticationToken(
-                ((UserDetail) userDetails).getMember(),
+                principalUser,
                 null,
-                userDetails.getAuthorities());
+                principalUser.getAuthorities());
     }
 
     @Override
