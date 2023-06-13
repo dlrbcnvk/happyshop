@@ -13,10 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -24,13 +21,14 @@ import java.util.NoSuchElementException;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
+@RequestMapping("/items")
 public class ItemController {
 
     private final ItemService itemService;
     private final MemberService memberService;
 
     // 판매자 상품 조회 + 뷰
-    @GetMapping("/items/seller")
+    @GetMapping("/seller")
     public String seller(@AuthenticationPrincipal Member member, Model model) {
 
         Member findMember = memberService.findOne(member.getId());
@@ -42,13 +40,13 @@ public class ItemController {
         return "item/seller";
     }
 
-    @GetMapping("/items/add")
+    @GetMapping("/add")
     public String addItem(@AuthenticationPrincipal Member member, Model model) {
         model.addAttribute("member", member);
         return "item/addItem";
     }
 
-    @PostMapping("/items/add")
+    @PostMapping("/add")
     public String addItem(@AuthenticationPrincipal Member member, ItemDto itemDto) {
 
         log.info("판매자 이름={}", member.getUsername());
@@ -68,7 +66,7 @@ public class ItemController {
         return "redirect:/items/seller";
     }
 
-    @GetMapping("/items/update/{itemId}")
+    @GetMapping("/update/{itemId}")
     public String updateItem(
             @AuthenticationPrincipal Member member,
             @PathVariable("itemId") Long itemId,
@@ -87,7 +85,7 @@ public class ItemController {
     }
 
     @Transactional
-    @PostMapping("/items/update/{itemId}")
+    @PostMapping("/update/{itemId}")
     public String updateItem(
             @PathVariable("itemId") Long itemId,
             ItemDto itemDto) {
@@ -99,7 +97,7 @@ public class ItemController {
     }
 
     @Transactional
-    @PostMapping("/items/delete/{itemId}")
+    @PostMapping("/delete/{itemId}")
     public String deleteItem(
             @AuthenticationPrincipal Member member,
             @PathVariable("itemId") Long itemId
@@ -114,7 +112,7 @@ public class ItemController {
         return "redirect:/items/seller";
     }
 
-    @GetMapping("/items/detail/{itemId}")
+    @GetMapping("/detail/{itemId}")
     public String itemDetail(@PathVariable("itemId") Long itemId, Model model) {
         Item findItem = itemService.findById(itemId);
         model.addAttribute("item", findItem);

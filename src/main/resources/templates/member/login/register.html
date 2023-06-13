@@ -8,6 +8,10 @@
         .phoneNumber input {
             width: 80px;
         }
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
     </style>
 </head>
 <body>
@@ -16,14 +20,26 @@
     </div>
     <div class="row justify-content-center my-5">
         <div class="col-lg-6">
-            <form th:action="@{/register}" method="post">
+            <form th:action="@{/register}" method="post" th:object="${userDto}">
 
                 <div class="mb-3">
                     <label for="email" class="form-label">이메일</label>
-                    <input type="email" class="form-control" name="email" id="email" required>
+                    <input type="text" class="form-control" name="email" id="email" th:field="*{email}"
+                           th:errorclass="field-error" placeholder="이메일을 입력하세요." required>
+                    <div class="field-error" th:errors="*{email}">비밀번호 길이 오류 메시지</div>
+
                 </div>
 
                 <div class="mb-3">
+                    <div th:if="${errors?.containsKey('passwordLengthGte8')}">
+                        <p class="field-error" th:text="${errors['passwordLengthGte8']}">비밀번호 길이 오류 메시지</p>
+                    </div>
+                    <div th:if="${errors?.containsKey('passwordSpecialPattern')}">
+                        <p class="field-error" th:text="${errors['passwordSpecialPattern']}">비밀번호 특수기호 오류 메시지</p>
+                    </div>
+                    <div th:if="${errors?.containsKey('passwordContinuousPattern')}">
+                        <p class="field-error" th:text="${errors['passwordContinuousPattern']}">비밀번호 연속된숫자 오류 메시지</p>
+                    </div>
                     <label for="password" class="form-label">비밀번호</label>
                     <input type="password" class="form-control" name="password" id="password" required>
                 </div>
@@ -42,6 +58,8 @@
                         <span class="mx-1">-</span>
                         <input type="text" name="phoneNumber3" id="phoneNumber3" maxlength="4" required>
                     </div>
+                    <div class="field-error" th:errors="*{phoneNumber2}">핸드폰 번호형식 오류 메시지</div>
+                    <div class="field-error" th:errors="*{phoneNumber1}">없는 지역번호 오류 메시지</div>
                 </div>
 
                 <div class="mb-3" id="address">

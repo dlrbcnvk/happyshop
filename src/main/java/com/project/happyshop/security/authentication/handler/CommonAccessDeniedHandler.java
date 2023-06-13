@@ -1,5 +1,6 @@
 package com.project.happyshop.security.authentication.handler;
 
+import com.project.happyshop.security.model.PrincipalUser;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,8 +35,8 @@ public class CommonAccessDeniedHandler implements AccessDeniedHandler {
             // ajax 가 아닌 일반적인 방법으로 접근했음을 의미한다.
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             Object principal = auth.getPrincipal();
-            if (principal instanceof UserDetails) {
-                String username = ((UserDetails) principal).getUsername();
+            if (principal instanceof PrincipalUser) {
+                String username = ((PrincipalUser) principal).getUsername();
                 request.setAttribute("username", username);
             }
             request.setAttribute("errorMessage", accessDeniedException);

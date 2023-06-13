@@ -50,6 +50,7 @@ public class DefaultSecurityConfig {
                 .antMatchers("/", "/register", "/successRegister", "/items/detail/**").permitAll()
                 .antMatchers("/login").anonymous()
                 .antMatchers("/logout").authenticated()
+                .antMatchers("/api/**").permitAll()
                 .anyRequest().authenticated();
 
         http
@@ -83,7 +84,7 @@ public class DefaultSecurityConfig {
 
         http.cors().configurationSource(corsConfigurationSource()); // CorsConfigurer 설정 초기화
 
-        http.csrf().ignoringAntMatchers("/rest/**"); // REST API 사용 시 csrf 비활성화 처리
+        http.csrf().ignoringAntMatchers("/api/**"); // REST API 사용 시 csrf 비활성화 처리
 
        http.sessionManagement()
                 .maximumSessions(1)// 동시 세션 제어
