@@ -4,7 +4,6 @@ import com.project.happyshop.domain.Address;
 import com.project.happyshop.domain.SocialProvider;
 import com.project.happyshop.domain.entity.Item;
 import com.project.happyshop.domain.entity.Member;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

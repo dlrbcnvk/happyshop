@@ -49,11 +49,16 @@ public class AppConfig {
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
         RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
 
+        StringBuilder uuidSb = new StringBuilder();
+        for (int i = 0; i < 100; i++) {
+            uuidSb.append(UUID.randomUUID());
+        }
+
         RSAKey rsaKey = new RSAKey.Builder(publicKey)
                 .privateKey(privateKey)
                 .keyUse(KeyUse.SIGNATURE)
                 .algorithm(JWSAlgorithm.RS512)
-                .keyID(UUID.randomUUID().toString())
+                .keyID(uuidSb.toString())
                 .build();
 
         return rsaKey.toKeyPair();

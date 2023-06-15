@@ -1,31 +1,21 @@
 package com.project.happyshop.controller;
 
-import com.project.happyshop.domain.dto.SocialRegisterViewDto;
 import com.project.happyshop.domain.entity.Item;
 import com.project.happyshop.domain.entity.Member;
-import com.project.happyshop.domain.entity.MemberRole;
 import com.project.happyshop.security.model.PrincipalUser;
 import com.project.happyshop.service.ItemService;
 import com.project.happyshop.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.RedirectStrategy;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @Slf4j

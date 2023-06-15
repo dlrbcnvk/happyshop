@@ -91,7 +91,7 @@ public class MemberController {
 
     @PostMapping("/register/social")
     @Transactional
-    public String register(SocialUserDto socialUserDto, @AuthenticationPrincipal PrincipalUser principalUser) {
+    public String registerSocial(SocialUserDto socialUserDto, @AuthenticationPrincipal PrincipalUser principalUser) {
         if (principalUser == null || principalUser.getSocialProvider() == SocialProvider.LOCAL) {
             return "redirect:/";
         }

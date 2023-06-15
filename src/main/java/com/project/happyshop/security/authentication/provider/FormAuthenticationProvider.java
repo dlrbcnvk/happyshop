@@ -2,6 +2,7 @@ package com.project.happyshop.security.authentication.provider;
 
 import com.project.happyshop.security.authentication.service.UserDetail;
 import com.project.happyshop.security.model.PrincipalUser;
+import com.project.happyshop.security.token.JwtAuthenticationToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -26,14 +27,19 @@ public class FormAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication auth) throws AuthenticationException {
-        String loginId = auth.getName();
+
+        if (auth instanceof JwtAuthenticationToken) {
+            return null;
+        }
+
+        String email = auth.getName();
         String password = (String) auth.getCredentials();
 
         PrincipalUser principalUser;
 
         try {
             // 사용자 조회
-            principalUser = (PrincipalUser) userDetailsService.loadUserByUsername(loginId);
+            principalUser = (PrincipalUser) userDetailsService.loadUserByUsername(email);
 
             if (principalUser == null || !passwordEncoder.matches(password, principalUser.getPassword())) {
                 throw new BadCredentialsException("Invalid password");

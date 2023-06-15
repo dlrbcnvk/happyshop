@@ -80,6 +80,15 @@ public class JJWTTest {
         log.info("checkJwtResult={}", checkJwtResult);
     }
 
+    @Test
+    void generateUUID() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 100; i++) {
+            sb.append(UUID.randomUUID());
+        }
+        log.info(sb.toString());
+    }
+
     private Boolean checkInvalidJws(String jwt) throws NoSuchAlgorithmException, JOSEException {
 
         Claims claims = Jwts.parserBuilder()

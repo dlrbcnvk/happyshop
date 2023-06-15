@@ -5,16 +5,20 @@ import com.project.happyshop.security.authentication.handler.FormAuthenticationF
 import com.project.happyshop.security.authentication.handler.FormAuthenticationSuccessHandler;
 import com.project.happyshop.security.authentication.service.CustomOAuth2UserService;
 import com.project.happyshop.security.authentication.service.CustomUserDetailsService;
+import com.project.happyshop.security.filter.JwtFilter;
+import com.project.happyshop.security.repository.InMemoryJwtTokenRepository;
 import com.project.happyshop.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
@@ -43,6 +47,7 @@ public class DefaultSecurityConfig {
                 .antMatchers("/static/bootstrap-5.3.0-alpha3-dist/js/**", "/static/images/**", "/static/bootstrap-5.3.0-alpha3-dist/css/**", "static/scss/**");
     }
 
+    @Order(0)
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -50,8 +55,8 @@ public class DefaultSecurityConfig {
                 .antMatchers("/", "/register", "/successRegister", "/items/detail/**").permitAll()
                 .antMatchers("/login").anonymous()
                 .antMatchers("/logout").authenticated()
-                .antMatchers("/api/**").permitAll()
                 .anyRequest().authenticated();
+
 
         http
                 .exceptionHandling()
@@ -63,7 +68,7 @@ public class DefaultSecurityConfig {
                 .loginPage("/login")
                 .defaultSuccessUrl("/")
                 .failureUrl("/login.html?error=true")
-                .usernameParameter("username")
+                .usernameParameter("email")
                 .passwordParameter("password")
                 .loginProcessingUrl("/login")
                 .successHandler(formAuthenticationSuccessHandler)
@@ -84,12 +89,14 @@ public class DefaultSecurityConfig {
 
         http.cors().configurationSource(corsConfigurationSource()); // CorsConfigurer 설정 초기화
 
-        http.csrf().ignoringAntMatchers("/api/**"); // REST API 사용 시 csrf 비활성화 처리
+
 
        http.sessionManagement()
                 .maximumSessions(1)// 동시 세션 제어
                 .maxSessionsPreventsLogin(true)
                 .expiredUrl("/");
+
+
 
        http.sessionManagement()
                .sessionFixation().changeSessionId() // 세션 고정 보호
@@ -139,6 +146,7 @@ public class DefaultSecurityConfig {
         commonAccessDeniedHandler.setErrorPage("/denied");
         return commonAccessDeniedHandler;
     }
+
 
 
 }
