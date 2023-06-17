@@ -1,5 +1,6 @@
 package com.project.happyshop.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.jwk.KeyUse;
@@ -62,5 +63,10 @@ public class AppConfig {
                 .build();
 
         return rsaKey.toKeyPair();
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 }

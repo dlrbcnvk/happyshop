@@ -2,11 +2,15 @@ package com.project.happyshop.repository;
 
 import com.project.happyshop.domain.entity.Member;
 import com.project.happyshop.domain.SocialProvider;
+import com.project.happyshop.domain.entity.MemberRole;
+import com.project.happyshop.domain.entity.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -32,5 +36,11 @@ public class MemberRepository {
                 .setParameter("email", email)
                 .setParameter("provider", provider)
                 .getResultList();
+    }
+
+    public Set<Role> findRoles(Member member) {
+        return member.getMemberRoles().stream()
+                .map(memberRole -> memberRole.getRole())
+                .collect(Collectors.toUnmodifiableSet());
     }
 }

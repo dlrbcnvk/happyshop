@@ -25,9 +25,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.ArrayList;
 import java.util.List;
-
-@Configuration
 @EnableWebSecurity
+@Configuration
 @RequiredArgsConstructor
 public class ApiSecurityConfig {
 
@@ -43,7 +42,7 @@ public class ApiSecurityConfig {
 
         http
                 .authorizeRequests()
-                .antMatchers("/api/", "/api/register", "/api/successRegister", "/api/items/detail/**", "/api/items").permitAll()
+                .antMatchers("/api/", "/api/register", "/api/successRegister", "/api/items/detail/**", "/api/items", "api/token").permitAll()
                 .antMatchers("/api/login").anonymous()
                 .antMatchers("/api/logout").authenticated()
                 .anyRequest().authenticated();
@@ -120,13 +119,13 @@ public class ApiSecurityConfig {
         return source;
     }
 
-    /**
-     * AccessDeniedHandler
-     */
-    @Bean
-    public AccessDeniedHandler accessDeniedHandler() {
-        CommonAccessDeniedHandler commonAccessDeniedHandler = new CommonAccessDeniedHandler();
-        commonAccessDeniedHandler.setErrorPage("/api/denied");
-        return commonAccessDeniedHandler;
-    }
+//    /**
+//     * AccessDeniedHandler
+//     */
+//    @Bean
+//    public AccessDeniedHandler accessDeniedHandler() {
+//        CommonAccessDeniedHandler commonAccessDeniedHandler = new CommonAccessDeniedHandler();
+//        commonAccessDeniedHandler.setErrorPage("/api/denied");
+//        return commonAccessDeniedHandler;
+//    }
 }

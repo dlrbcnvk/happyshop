@@ -1,30 +1,36 @@
 package com.project.happyshop.security.authentication.provider;
 
 import com.project.happyshop.domain.entity.Member;
+import com.project.happyshop.domain.entity.Role;
 import com.project.happyshop.security.util.JwtProperties;
 import com.project.happyshop.service.MemberService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.KeyPair;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
+@Getter
 public class TokenProvider {
 
     private final JwtProperties jwtProperties;
     private final KeyPair keyPair;
-
     private final MemberService memberService;
 
     public String generateToken(Member member, Duration expiredAt) {
@@ -39,9 +45,10 @@ public class TokenProvider {
         Map<String, Object> claims = new ConcurrentHashMap<>();
         claims.put("id", member.getId());
         claims.put("provider", member.getProvider().toString());
+        claims.put("username", member.getUsername());
 
         return Jwts.builder()
-                .setHeaderParam("typ", "JWT")
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setIssuer(jwtProperties.getIssuer())
                 .setIssuedAt(now)
                 .setExpiration(expiry)
@@ -51,25 +58,21 @@ public class TokenProvider {
                 .compact();
     }
 
-    // JWT 토큰 유효성 검증 메서드
-    // 에러가 난다면 parserBuilder() 내부에서 에러가 터진 것임. 못 잡게 설계되어 있음.
-    public boolean isValidToken(String token) {
-
-        Jwts.parserBuilder()
-                .setSigningKey(keyPair.getPublic())
-                .build()
-                .parseClaimsJws(token);
-
-        return true;
-    }
-
     // 토큰 기반으로 인증 정보를 가져오는 메서드
+    @Transactional
     public Authentication getAuthentication(String token) {
         Claims claims = getClaims(token);
 
-        Set<GrantedAuthority> authorities = new HashSet<>();
+
         // TODO 권한 데이터를 어떻게 가져올 것인가가 문제임. 책에서는 ROLE_USER 를 수동으로 만드는데,
         //  나의 경우 이미 DB에 있음.
+        //  member, member_role, role 테이블의 관계, 개선 포인트가 있을지 생각해볼 것
+        Long memberIdByToken = getMemberId(token);
+        Member findMember = memberService.findOne(memberIdByToken);
+        Set<Role> roles = memberService.getRoles(findMember);
+        Set<GrantedAuthority> authorities = roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
+                .collect(Collectors.toUnmodifiableSet());
 
         return new UsernamePasswordAuthenticationToken(new User(claims.getSubject(), "", authorities), authorities);
     }
@@ -86,5 +89,21 @@ public class TokenProvider {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+
+    // JWT 토큰 유효성 검증 메서드
+    public boolean validToken(String token) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(keyPair.getPublic())
+                    .build()
+                    .parseClaimsJws(token);
+
+        } catch (JwtException e) { // 복호화 과정에서 예외가 발생하면 유효하지 않은 토큰
+            log.info("JwtException is occurred");
+            return false;
+        }
+        return true;
     }
 }

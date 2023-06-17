@@ -26,7 +26,6 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
@@ -54,15 +53,11 @@ public class DefaultSecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/", "/register", "/successRegister", "/items/detail/**").permitAll()
                 .antMatchers("/login").anonymous()
-                .antMatchers("/logout").authenticated()
-                .anyRequest().authenticated();
-
+                .antMatchers("/logout").authenticated();
 
         http
                 .exceptionHandling()
                 .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
-                .accessDeniedPage("/denied")
-                .accessDeniedHandler(accessDeniedHandler())
             .and()
                 .formLogin()
                 .loginPage("/login")
@@ -86,6 +81,8 @@ public class DefaultSecurityConfig {
                 .oauth2Login(oauth2 ->
                         oauth2.userInfoEndpoint(userInfoEndpointConfig ->
                                 userInfoEndpointConfig.userService(customOAuth2UserService)));
+
+        http.csrf().ignoringAntMatchers("/api/**"); // REST API 사용 시 csrf 비활성화 처리
 
         http.cors().configurationSource(corsConfigurationSource()); // CorsConfigurer 설정 초기화
 

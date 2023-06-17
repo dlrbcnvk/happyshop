@@ -4,11 +4,12 @@ import lombok.Getter;
 import lombok.ToString;
 
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 @Embeddable
 @Getter
 @ToString
-public class Address {
+public class Address implements Serializable {
 
     private String juso;
     private String jusoDetail;

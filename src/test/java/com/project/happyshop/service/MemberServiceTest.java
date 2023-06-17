@@ -3,14 +3,22 @@ package com.project.happyshop.service;
 import com.project.happyshop.domain.Address;
 import com.project.happyshop.domain.entity.Member;
 import com.project.happyshop.domain.SocialProvider;
+import com.project.happyshop.domain.entity.MemberRole;
+import com.project.happyshop.domain.entity.Role;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -21,6 +29,10 @@ public class MemberServiceTest {
 
     @Autowired
     MemberService memberService;
+    @Autowired
+    MemberRoleService memberRoleService;
+    @Autowired
+    RoleService roleService;
 
     @Test
     public void 회원가입() {
@@ -46,7 +58,7 @@ public class MemberServiceTest {
         Member member = createMember1();
         memberService.join(member);
         Member findMember = memberService.findOne(Long.MAX_VALUE);
-        Assertions.assertThat(findMember).isEqualTo(null);
+        assertThat(findMember).isEqualTo(null);
     }
 
     @Test
@@ -131,6 +143,41 @@ public class MemberServiceTest {
         );
 
         assertThrows(IllegalStateException.class, () -> memberService.join(member));
+    }
+
+    // TODO
+    @DisplayName("getRoles(): 회원 권한 조회")
+    @Test
+    public void getRoles() {
+        // given
+        Member member = createMember1();
+        memberService.join(member);
+
+        Role role_user = roleService.findByRoleName("ROLE_USER");
+        MemberRole memberRole = new MemberRole();
+        memberRole.setMemberAndRole(member, role_user);
+        memberRoleService.save(memberRole);
+
+        Role role_manager = roleService.findByRoleName("ROLE_MANAGER");
+        memberRole = new MemberRole();
+        memberRole.setMemberAndRole(member, role_manager);
+        memberRoleService.save(memberRole);
+
+        Role role_admin = roleService.findByRoleName("ROLE_ADMIN");
+        memberRole = new MemberRole();
+        memberRole.setMemberAndRole(member, role_admin);
+        memberRoleService.save(memberRole);
+
+        // when
+        Set<Role> roles = memberService.getRoles(member);
+
+        Set<String> roleNameSet = roles.stream().map(Role::getRoleName).collect(Collectors.toUnmodifiableSet());
+
+        // then
+        assertThat(roles.size()).isEqualTo(3);
+        assertThat(roleNameSet.contains("ROLE_USER")).isTrue();
+        assertThat(roleNameSet.contains("ROLE_MANAGER")).isTrue();
+        assertThat(roleNameSet.contains("ROLE_ADMIN")).isTrue();
     }
 
     private Member createMember1() {

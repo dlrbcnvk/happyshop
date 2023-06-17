@@ -3,6 +3,7 @@ package com.project.happyshop.service;
 import com.project.happyshop.domain.Address;
 import com.project.happyshop.domain.SocialProvider;
 import com.project.happyshop.domain.entity.Member;
+import com.project.happyshop.domain.entity.Role;
 import com.project.happyshop.repository.JpaMemberRepository;
 import com.project.happyshop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 @Service
@@ -82,6 +84,14 @@ public class MemberService {
         if (!findMembers.isEmpty()) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
+    }
+
+    /**
+     * 회원의 권한 조회
+     */
+    public Set<Role> getRoles(Member member) {
+        // TODO
+        return memberRepository.findRoles(member);
     }
 
 
