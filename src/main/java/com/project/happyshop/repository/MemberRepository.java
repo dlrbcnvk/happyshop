@@ -18,6 +18,8 @@ public class MemberRepository {
 
     private final EntityManager em;
 
+    private final JpaMemberRoleRepository jpaMemberRoleRepository;
+
     public void save(Member member) { em.persist(member); }
 
     public List<Member> findAll() {
@@ -40,7 +42,7 @@ public class MemberRepository {
 
     public Set<Role> findRoles(Member member) {
         return member.getMemberRoles().stream()
-                .map(memberRole -> memberRole.getRole())
+                .map(MemberRole::getRole)
                 .collect(Collectors.toUnmodifiableSet());
     }
 }

@@ -41,9 +41,6 @@ public class CustomUserDetailsService extends AbstractOAuth2UserService implemen
             throw new UsernameAndProviderNotFoundException("No member found with email and provider: {" + email + ", " + SocialProvider.LOCAL + "}");
         }
 
-        findMember.getMemberRoles().stream().map(memberRole ->
-                memberRole.getRole().getRoleName());
-
         ProviderUserRequest providerUserRequest = new ProviderUserRequest(findMember);
         ProviderUser providerUser = providerUser(providerUserRequest);
         return new PrincipalUser(providerUser);
