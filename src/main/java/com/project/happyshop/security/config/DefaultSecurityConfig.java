@@ -51,7 +51,7 @@ public class DefaultSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/register", "/successRegister", "/items/detail/**").permitAll()
+                .antMatchers("/", "/register", "/successRegister", "/items/detail/**", "/api/**").permitAll()
                 .antMatchers("/login").anonymous()
                 .antMatchers("/logout").authenticated();
 

@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,10 +23,19 @@ public class JwtFilter extends OncePerRequestFilter {
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String TOKEN_PREFIX = "Bearer ";
     private static final String DEFAULT_FILTER_PROCESSES_URI = "/api/";
+    private static final Set<String> WHITE_LIST = new HashSet<>(Arrays.asList(
+            "/api/", ""));
+
 
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        // api 요청이 아닌 경우 pass
+        if (!request.getRequestURI().startsWith(DEFAULT_FILTER_PROCESSES_URI)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         // 요청 헤더의 Authorization 키 값 조회
         String authorizationHeader = request.getHeader(AUTHORIZATION_HEADER);
@@ -33,11 +43,11 @@ public class JwtFilter extends OncePerRequestFilter {
         // 가져온 값에서 접두사 제거
         String token = getAccessToken(authorizationHeader);
 
-        // 가져온 토큰이 유효한지 확인하고, 유효한 경우 인증 객체 저장
-        if (tokenProvider.validToken(token)) {
-            Authentication authentication = tokenProvider.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
+//        // 가져온 토큰이 유효한지 확인하고, 유효한 경우 인증 객체 저장
+//        if (tokenProvider.validToken(token)) {
+//            Authentication authentication = tokenProvider.getAuthentication(token);
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
+//        }
 
         filterChain.doFilter(request, response);
 

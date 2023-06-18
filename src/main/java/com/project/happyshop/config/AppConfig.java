@@ -65,6 +65,9 @@ public class AppConfig {
         return rsaKey.toKeyPair();
     }
 
+    /**
+     * ObjectMapper
+     */
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper();

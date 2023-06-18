@@ -4,10 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,13 +17,14 @@ public class LoginApiController {
     @GetMapping("/login")
     public String login_api() {
         log.info("GET /api/login");
-        return "login";
+        return "POST /login 을 요청하세요.";
     }
 
     @PostMapping("/login")
-    public String login_post_api() {
-        log.info("POST /api/login");
-        return "login post success";
+    public Object login_post_api() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        return auth;
     }
 
     @GetMapping("/logout")
